@@ -8,6 +8,8 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/drive/1C1mOs7q1luYmI-s4sHNYQnlzFWwlDU9v
 
+or https://poe.com/RoomMind
+
 ## Run Locally
 
 **Prerequisites:**  Node.js
