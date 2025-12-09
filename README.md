@@ -24,29 +24,39 @@ Your Mixed-Reality Productivity Dome
 RoomMind transforms any physical room into a focused mixed-reality cockpit powered by intelligent spatial interfaces and AI-enhanced workflows.
 Designed for makers, students, devs, and creators who want deep focus without disconnecting from their real environment.
 📎 Badges
-
-
-
+<p align="center">
+  <img src="https://img.shields.io/badge/status-active-brightgreen" />
+  <img src="https://img.shields.io/badge/license-MIT-blue" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/AI-Gemini-4285F4?logo=google" />
+</p>
 
 📘 Overview
 RoomMind reimagines productivity by blending your real physical environment with adaptive MR overlays and AI-powered spatial utilities. Instead of trapping you inside a VR world, RoomMind enhances the actual room you’re in — creating a “dome of focus” that helps you think, create, and work more effectively.
 Think of it as a hybrid workspace where your walls, desk, and surroundings become interactive surfaces that host tools, dashboards, and AI helpers.
+
 ✨ Features
 🌀 Mixed-Reality Room Transformation
 Overlay productivity tools in your real environment
 Spatial UI components that anchor to your room
+
 🤖 AI-Powered Workspace
 Integrated Gemini API (or any LLM)
 Smart suggestions, code help, writing assistance
 AI-guided task organization and focus management
+
 🛠 Lightweight & Extensible
 Modular component architecture
 Add your own MR widgets
 Web-native, no heavy game engine required
+
 ⚡️ Instant Local Dev
 Powered by Vite for blazing-fast reloads
 Pure TypeScript + React
 Zero-backend architecture (optional APIs supported)
+
 📂 Project Structure
 RoomMind/
 │
@@ -64,6 +74,7 @@ RoomMind/
 ├── package.json
 ├── vite.config.ts
 └── README.md
+
 🧰 Tech Stack
 Layer	Technology
 UI Framework	React + TypeScript
@@ -71,6 +82,7 @@ Build Tool	Vite
 Runtime	Browser / WebXR / MR APIs
 AI Services	Gemini API (configurable)
 Styling	CSS / custom MR UI components
+
 🚀 Getting Started
 1. Clone the Repository
 git clone https://github.com/Zenieverse/RoomMind.git
@@ -83,6 +95,7 @@ GEMINI_API_KEY=your_api_key_here
 4. Run Development Server
 npm run dev
 Open the URL printed in the console (usually http://localhost:5173).
+
 🧪 Usage
 Once running, you can:
 Activate the MR view
@@ -91,14 +104,13 @@ Use voice + text prompts
 Rearrange tools by dragging in 3D space
 Ask the AI to organize your tasks into a room-scale layout
 RoomMind is designed to feel like you are installing tools into your room.
+
 📘 Diagrams
-(Optional — requires your PNG/SVG uploads)
-You can add:
 Architecture Diagram
 Component Diagram
 MR Layout Diagram
 Workflow Diagram
-I can generate these for you — just say “Generate the diagrams”.
+
 🤝 Contributing
 Contributions are welcome!
 To contribute:
@@ -108,6 +120,7 @@ git checkout -b feature/my-feature
 Commit your changes
 Push the branch and open a Pull Request
 Please ensure code is formatted and typed properly.
+
 📌 Roadmap
 Multi-room environment memory
 Custom MR widgets (clock, kanban board, holographic file browser)
@@ -115,8 +128,10 @@ Full gesture-based interactions
 Enhanced AI agent with autonomy + focus coaching
 Mobile + headset-ready build
 Add spatial sound cues
+
 🪪 License
 Distributed under the MIT License.
 See LICENSE for details.
+
 ⭐ Support the Project
 If RoomMind inspires you, please consider starring the repo — it helps others discover the project and supports continued development
