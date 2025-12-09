@@ -1,5 +1,8 @@
 {
-  "name": "RoomMind Companion",
-  "description": "The web-based dashboard and neural link for the RoomMind Mixed Reality productivity ecosystem. Manage spatial anchors, view productivity stats, and process notes with AI.",
-  "requestFramePermissions": []
+  "name": "RoomMind",
+  "description": "The web-based dashboard and neural link for the RoomMind Mixed Reality productivity ecosystem.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
 }

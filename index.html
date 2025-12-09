@@ -11,6 +11,8 @@
         font-family: 'Inter', sans-serif;
         background-color: #0f172a; /* Slate 900 */
         color: #f8fafc; /* Slate 50 */
+        margin: 0;
+        overflow: hidden; /* Prevent scroll on body for XR */
       }
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
@@ -25,6 +27,16 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #64748b; 
+      }
+      
+      /* XR DOM Overlay Styles */
+      #root {
+        height: 100vh;
+        width: 100vw;
+      }
+      /* Ensure AR Button is visible above other UI */
+      button {
+        pointer-events: auto;
       }
     </style>
     <script>
@@ -46,16 +58,22 @@
         }
       }
     </script>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "d3": "https://aistudiocdn.com/d3@^7.9.0"
+    "react": "https://esm.sh/react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "three": "https://esm.sh/three@0.160.0",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.16?external=react,react-dom,three",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@9.99.0?external=react,react-dom,three,@react-three/fiber",
+    "@react-three/xr": "https://esm.sh/@react-three/xr@5.7.1?external=react,react-dom,three,@react-three/fiber",
+    "recharts": "https://esm.sh/recharts@2.12.0?external=react,react-dom",
+    "lucide-react": "https://esm.sh/lucide-react@0.330.0?external=react",
+    "@google/genai": "https://esm.sh/@google/genai@0.1.1",
+    "d3": "https://esm.sh/d3@7.9.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
   }
 }
 </script>
