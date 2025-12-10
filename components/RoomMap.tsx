@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { SpatialAnchor } from '../types';
 import { MOCK_ANCHORS } from '../constants';
-import { RefreshCw, Maximize, ScanLine, CheckCircle2 } from 'lucide-react';
+import { RefreshCw, Maximize, ScanLine, CheckCircle2, Radar } from 'lucide-react';
 import { analyzeRoomLayout } from '../services/geminiService';
 
 interface PlacedItem {
@@ -20,7 +19,7 @@ const RoomMap: React.FC = () => {
   // Initial Draw
   useEffect(() => {
     drawMap();
-  }, [placements]); // Redraw when placements change
+  }, [placements]);
 
   const drawMap = () => {
     if (!svgRef.current) return;
@@ -104,11 +103,10 @@ const RoomMap: React.FC = () => {
         g.style("opacity", 0).transition().duration(800).delay(i * 200).style("opacity", 1);
 
         if (item.type === 'Board') {
-            // Draw a board on the wall
             const boardWidth = Math.min(120, parent.dimensions.width - 20);
             g.append("rect")
                 .attr("x", (parent.dimensions.width - boardWidth) / 2)
-                .attr("y", 10) // Offset from wall
+                .attr("y", 10)
                 .attr("width", boardWidth)
                 .attr("height", 60)
                 .attr("fill", "rgba(59, 130, 246, 0.2)")
@@ -116,11 +114,9 @@ const RoomMap: React.FC = () => {
                 .attr("stroke-width", 2)
                 .attr("rx", 2)
                 .attr("filter", "drop-shadow(0 0 4px #3b82f6)");
-                
             g.append("text").attr("x", parent.dimensions.width/2).attr("y", 40).attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", "10px").text("Task Board");
 
         } else if (item.type === 'Timeline') {
-            // Draw timeline strip on table
             g.append("rect")
                 .attr("x", 10)
                 .attr("y", parent.dimensions.height / 2 - 10)
@@ -129,19 +125,9 @@ const RoomMap: React.FC = () => {
                 .attr("rx", 10)
                 .attr("fill", "rgba(168, 85, 247, 0.2)")
                 .attr("stroke", "#a855f7");
-            
             g.append("text").attr("x", parent.dimensions.width/2).attr("y", parent.dimensions.height/2 + 3).attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", "9px").text("Timeline");
 
         } else if (item.type === 'Sphere') {
-            // Focus sphere in open space
-            g.append("circle")
-                .attr("cx", parent.dimensions.width / 2)
-                .attr("cy", parent.dimensions.height / 2)
-                .attr("r", 20)
-                .attr("fill", "url(#sphereGradient)")
-                .attr("filter", "blur(4px)");
-
-            // Define radial gradient for sphere if not exists
             const grad = defs.append("radialGradient").attr("id", "sphereGradient");
             grad.append("stop").attr("offset", "0%").attr("stop-color", "#fff");
             grad.append("stop").attr("offset", "100%").attr("stop-color", "#3b82f6");
@@ -150,9 +136,8 @@ const RoomMap: React.FC = () => {
                 .attr("cx", parent.dimensions.width / 2)
                 .attr("cy", parent.dimensions.height / 2)
                 .attr("r", 20)
-                .attr("fill", "none")
-                .attr("stroke", "#fff")
-                .attr("stroke-width", 1);
+                .attr("fill", "url(#sphereGradient)")
+                .attr("filter", "blur(4px)");
         }
     });
   };
@@ -160,8 +145,6 @@ const RoomMap: React.FC = () => {
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
     const layoutDesc = MOCK_ANCHORS.map(a => `ID:${a.id} Label:${a.label} Type:${a.type} Size:${a.dimensions.width}x${a.dimensions.height}`).join('; ');
-    
-    // Simulate API or use real one
     const result = await analyzeRoomLayout(layoutDesc);
     if (result && result.placements) {
         setPlacements(result.placements);
@@ -174,10 +157,10 @@ const RoomMap: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div>
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <ScanLine className="text-blue-400" size={20}/>
-                Environment Scanner
+                <Radar className="text-blue-400" size={20}/>
+                Spatial Map
             </h3>
-            <p className="text-sm text-slate-400">Passthrough Semantic Map • {MOCK_ANCHORS.length} Anchors</p>
+            <p className="text-sm text-slate-400">LiDAR Semantic Scan</p>
         </div>
         <button 
             onClick={handleAnalyze} 
@@ -189,22 +172,27 @@ const RoomMap: React.FC = () => {
             }`}
         >
             {isAnalyzing ? <RefreshCw className="animate-spin" size={16} /> : placements.length > 0 ? <CheckCircle2 size={16}/> : <Maximize size={16} />}
-            {isAnalyzing ? "Scanning..." : placements.length > 0 ? "Optimized" : "Auto-Place Holograms"}
+            {isAnalyzing ? "Processing..." : placements.length > 0 ? "Optimized" : "Auto-Layout"}
         </button>
       </div>
 
       <div className="flex-1 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden relative flex items-center justify-center shadow-inner group">
         <svg ref={svgRef} width="600" height="400" className="w-full h-full opacity-90 transition-opacity duration-700"></svg>
         
+        {/* Scanner Effect */}
+        <div className="absolute inset-0 pointer-events-none opacity-20">
+             <div className="w-full h-1 bg-blue-500 shadow-[0_0_15px_#3b82f6] absolute animate-scan"></div>
+        </div>
+        
         <div className="absolute top-4 left-4 font-mono text-[10px] text-blue-500/50 pointer-events-none">
-            FRAME: 20492<br/>
-            LIDAR: ACTIVE
+            ROOM_ID: 0x82A1<br/>
+            MESH_QUALITY: HIGH
         </div>
       </div>
 
       {placements.length > 0 && (
         <div className="mt-4 p-4 bg-slate-800/50 border border-slate-700 rounded-xl animate-in fade-in slide-in-from-bottom-4 duration-500 max-h-32 overflow-y-auto">
-            <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Configuration Strategy</h4>
+            <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Generated Layout</h4>
             <div className="grid grid-cols-1 gap-2">
                 {placements.map((p, i) => (
                     <div key={i} className="flex items-start gap-2 text-sm text-slate-300">

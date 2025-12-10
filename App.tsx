@@ -21,7 +21,7 @@ const DashboardView: React.FC<DashboardProps> = ({ currentMode, setCurrentMode }
     return (
         <div className="grid grid-cols-12 gap-6 h-full overflow-y-auto pr-2 pb-20">
           {/* Immersive Launch Banner */}
-          <div className="col-span-12 bg-gradient-to-r from-indigo-900/80 to-purple-900/80 border border-indigo-500/50 rounded-2xl p-8 flex items-center justify-between relative overflow-hidden group">
+          <div className="col-span-12 bg-gradient-to-r from-indigo-900/80 to-purple-900/80 border border-indigo-500/50 rounded-2xl p-8 flex items-center justify-between relative overflow-hidden group shadow-2xl">
             <div className="relative z-10">
                 <h2 className="text-3xl font-bold text-white mb-2">Mixed Reality Workspace</h2>
                 <p className="text-indigo-200 max-w-xl">
@@ -30,14 +30,15 @@ const DashboardView: React.FC<DashboardProps> = ({ currentMode, setCurrentMode }
                 </p>
             </div>
             <div className="relative z-10 flex gap-4">
-                  <div className="flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl shadow-lg backdrop-blur-sm">
+                  <div className="flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl shadow-lg backdrop-blur-sm animate-pulse">
                     <Glasses size={24} />
-                    <span>Click 'Start AR Space' (Bottom Right)</span>
+                    <span>Start Session</span>
                   </div>
             </div>
             
             {/* Decorative Grid */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-indigo-500 rounded-full blur-3xl opacity-20"></div>
           </div>
 
           {/* Top Row: Timeline (Full Width) */}
@@ -46,10 +47,10 @@ const DashboardView: React.FC<DashboardProps> = ({ currentMode, setCurrentMode }
           </div>
 
           {/* Middle Row: Stats Chart & Mode Selector */}
-          <div className="col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col">
+          <div className="col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col shadow-lg">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-white">Focus Intensity</h3>
-              <select className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-1 focus:outline-none">
+              <select className="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-3 py-1 focus:outline-none focus:border-blue-500 transition-colors">
                 <option>Today</option>
                 <option>This Week</option>
               </select>
@@ -61,7 +62,7 @@ const DashboardView: React.FC<DashboardProps> = ({ currentMode, setCurrentMode }
           
            {/* Side Stats */}
            <div className="col-span-4 flex flex-col gap-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between flex-1">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between flex-1 shadow-lg">
                     <div className="flex justify-between items-start">
                         <div className="p-2 bg-green-500/10 rounded-lg text-green-500"><Target size={20} /></div>
                         <span className="text-xs font-mono text-green-400">+12%</span>
@@ -71,7 +72,7 @@ const DashboardView: React.FC<DashboardProps> = ({ currentMode, setCurrentMode }
                         <div className="text-sm text-slate-500">Goal Completion</div>
                     </div>
                 </div>
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between flex-1">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between flex-1 shadow-lg">
                     <div className="flex justify-between items-start">
                         <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500"><Zap size={20} /></div>
                         <span className="text-xs font-mono text-blue-400">Streak: 4d</span>
@@ -92,7 +93,7 @@ const App: React.FC = () => {
     const [isInAR, setIsInAR] = useState(false);
 
     return (
-        <div className="flex h-screen bg-slate-950 text-slate-50 overflow-hidden font-inter relative">
+        <div className="flex h-screen bg-slate-950 text-slate-50 overflow-hidden font-inter relative selection:bg-blue-500/30">
              {/* 3D Immersive Layer (Background/XR) */}
             <div className="absolute inset-0 z-0">
                 <Canvas>
@@ -105,30 +106,30 @@ const App: React.FC = () => {
             </div>
 
             {/* 2D UI Layer - Hidden when in AR to allow passthrough visibility */}
-            {!isInAR && (
-                <div className="relative z-10 flex w-full h-full pointer-events-auto bg-slate-950/95 transition-opacity duration-500">
-                    <div style={{ pointerEvents: 'auto', display: 'flex', width: '100%', height: '100%' }}>
-                    <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <div 
+                className={`relative z-10 flex w-full h-full pointer-events-auto bg-slate-950 transition-opacity duration-700 ${isInAR ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            >
+                <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+                <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+                
+                <main className="flex-1 flex flex-col min-w-0 h-full relative">
+                    <Header currentMode={currentMode} setCurrentMode={setCurrentMode} />
                     
-                    <main className="flex-1 flex flex-col min-w-0 h-full relative">
-                        <Header currentMode={currentMode} />
-                        
-                        <div className="flex-1 p-6 overflow-hidden">
-                            {activeTab === 'dashboard' && (
-                                <DashboardView currentMode={currentMode} setCurrentMode={setCurrentMode} />
-                            )}
-                            {activeTab === 'spatial' && <RoomMap />}
-                            {activeTab === 'notes' && <AINotes />}
-                            {activeTab === 'stats' && <Analytics />}
-                        </div>
-                    </main>
+                    <div className="flex-1 p-6 overflow-hidden">
+                        {activeTab === 'dashboard' && (
+                            <DashboardView currentMode={currentMode} setCurrentMode={setCurrentMode} />
+                        )}
+                        {activeTab === 'spatial' && <RoomMap />}
+                        {activeTab === 'notes' && <AINotes />}
+                        {activeTab === 'stats' && <Analytics />}
                     </div>
+                </main>
                 </div>
-            )}
+            </div>
             
             {/* AR Start Button */}
             <ARButton 
-                className="absolute bottom-6 right-6 z-50 pointer-events-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all flex items-center gap-2 border-none cursor-pointer"
+                className={`absolute bottom-6 right-6 z-50 pointer-events-auto px-6 py-3 font-bold rounded-xl shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all flex items-center gap-2 border-none cursor-pointer hover:scale-105 active:scale-95 ${isInAR ? 'bg-red-500/80 text-white hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-500 text-white'}`}
                 sessionInit={{ 
                     requiredFeatures: ['hit-test'],
                     optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers', 'dom-overlay'],
