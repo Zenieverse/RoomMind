@@ -8,6 +8,8 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/ace5919b-b33a-4f37-8df8-81a249046de3
 
+or https://roommind-764082783379.us-west1.run.app
+
 ## Run Locally
 
 **Prerequisites:**  Node.js
